@@ -1,3 +1,4 @@
+import { exclude } from "@/utils/prisma-utils";
 export type ApplicationError = {
   name: string;
   message: string;
@@ -30,4 +31,30 @@ export type RequestError = {
 
 export type postTicket = {
   ticketTypeId: number;
+};
+
+export type postPayment = {
+  ticketId: number;
+  cardData: {
+    issuer: string;
+    number: number;
+    name: string;
+    expirationDate: Date;
+    cvv: number;
+  };
+};
+
+export type cardData = {
+  issuer: string;
+  number: number;
+  name: string;
+  expirationDate: Date;
+  cvv: number;
+};
+
+export type savedData = {
+  ticketId: number;
+  cardIssuer: string;
+  cardLastDigits: string;
+  value: number;
 };

@@ -7,6 +7,10 @@ async function getTicketsTypes(): Promise<TicketType[]> {
   return ticketsRepository.findTicketTypes();
 }
 
+async function getTicketById(ticketId: number) {
+  return ticketsRepository.findTicket(ticketId);
+}
+
 async function getTicketByUser(userId: number) {
   const hasEnrolment = await enrollmentRepository.findWithAddressByUserId(userId);
   if (!hasEnrolment.id) {
@@ -18,6 +22,7 @@ async function getTicketByUser(userId: number) {
   }
   return hasTicket;
 }
+
 async function insertNewTicket(ticketTypeId: number, userId: number) {
   const hasEnrolment = await enrollmentRepository.findWithAddressByUserId(userId);
   if (!hasEnrolment.id) {
@@ -29,6 +34,6 @@ async function insertNewTicket(ticketTypeId: number, userId: number) {
   return hasTicket;
 }
 
-const ticketService = { getTicketsTypes, getTicketByUser, insertNewTicket };
+const ticketService = { getTicketsTypes, getTicketByUser, insertNewTicket, getTicketById };
 
 export default ticketService;

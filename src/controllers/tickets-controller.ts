@@ -20,7 +20,7 @@ export async function getTickets(req: AuthenticatedRequest, res: Response) {
     return res.status(httpStatus.OK).send(ticket);
   } catch (error) {
     if (error.name === "TypeError") {
-      return res.send(httpStatus.NOT_FOUND);
+      return res.sendStatus(httpStatus.NOT_FOUND);
     }
     return res.sendStatus(httpStatus.BAD_REQUEST);
   }
@@ -34,7 +34,7 @@ export async function postTicket(req: AuthenticatedRequest, res: Response) {
     return res.status(httpStatus.CREATED).send(ticket);
   } catch (error) {
     if (error.name === "TypeError") {
-      return res.send(httpStatus.NOT_FOUND);
+      return res.sendStatus(httpStatus.NOT_FOUND);
     }
     return res.sendStatus(httpStatus.BAD_REQUEST);
   }

@@ -18,7 +18,17 @@ async function getTicketByUser(userId: number) {
   }
   return hasTicket;
 }
+async function insertNewTicket(ticketTypeId: number, userId: number) {
+  const hasEnrolment = await enrollmentRepository.findWithAddressByUserId(userId);
+  if (!hasEnrolment.id) {
+    throw notFoundError();
+  }
+  await ticketsRepository.insertTicket(hasEnrolment, ticketTypeId);
 
-const ticketService = { getTicketsTypes, getTicketByUser };
+  const hasTicket = await ticketsRepository.findTicketByEnrollmentId(hasEnrolment.id);
+  return hasTicket;
+}
+
+const ticketService = { getTicketsTypes, getTicketByUser, insertNewTicket };
 
 export default ticketService;

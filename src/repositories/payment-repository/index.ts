@@ -1,8 +1,7 @@
-import { savedData } from "@/protocols";
 import { prisma } from "@/config";
-import { TicketStatus } from "@prisma/client";
+import { Payment } from "@prisma/client";
 
-async function getPaymentsByTicketId(ticketId: number) {
+async function findPaymentByTicketId(ticketId: number) {
   return prisma.payment.findFirst({
     where: {
       ticketId,
@@ -10,19 +9,20 @@ async function getPaymentsByTicketId(ticketId: number) {
   });
 }
 
-async function createPayment(savedData: savedData) {
-  await prisma.ticket.update({
-    where: {
-      id: savedData.ticketId,
-    },
+async function createPayment(ticketId: number, params: PaymentParams) {
+  return prisma.payment.create({
     data: {
-      status: TicketStatus.PAID,
+      ticketId,
+      ...params,
     },
-  });
-  return await prisma.payment.create({
-    data: savedData,
   });
 }
 
-const paymentRepository = { getPaymentsByTicketId, createPayment };
+export type PaymentParams = Omit<Payment, "id" | "createdAt" | "updatedAt">;
+
+const paymentRepository = {
+  findPaymentByTicketId,
+  createPayment,
+};
+
 export default paymentRepository;
